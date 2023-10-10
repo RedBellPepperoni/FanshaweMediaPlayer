@@ -2,6 +2,7 @@
 #include <fmod.hpp>
 #include <map>
 #include <string>
+#include <vector>
 
 
 
@@ -11,7 +12,7 @@ namespace FanshaweGameEngine
 	{
 		// Forwward Declaring for faster compile times
 		class AudioClip;
-
+		class Channel;
 	
 
 		class AudioManager
@@ -24,7 +25,7 @@ namespace FanshaweGameEngine
 
 			// Type Definitions for readability
 			typedef std::map<std::string, FMOD::Sound*> SoundMap;
-			typedef std::map<std::string, FMOD::Channel*> ChannelMap;
+			typedef std::vector<Channel*> ChannelList;
 
 
 		public:
@@ -37,26 +38,43 @@ namespace FanshaweGameEngine
 			// Initialized the Core Audio Systems
 			static void Init();
 
-
 			// Called every Frame of the Gameloop
 			static void Update();
-
 
 			// Called to Deactivate/ Shutdown the System after use
 			static void Shutdown();
 
 
+
 			// Sound Loading / Unloading
 			bool LoadSound(AudioClip& clip);
-
-			
 			void UnloadSound(const AudioClip& clip);
 
 			// Sound PlayBack
-			void PlaySound(const AudioClip& clip);
+			int PlayNewSound(const AudioClip& clip);
+
+
+			void PlayPauseToggle(int id);
+
+			
+
+			bool GetChannelPaused(const int id);
+
+			unsigned int GetSoundCliplength();
+
+			float GetChannelVolume(const int id);
+			
+			// Modifying Channel Values
+			void SetChannelVolume(const int id, const float value);
+			void SetChannelPitch(const int id, const float value);
+			void SetChannelPan(const int id, const float value);
+
+			void GetPlaybackPosition(int id, unsigned int& currentValue);
 
 
 			static AudioManager* GetCurrent();
+
+
 
 
 		private:
@@ -64,17 +82,20 @@ namespace FanshaweGameEngine
 			static AudioManager* audiomanagerImp;
 
 			// The maximum number of Channels for the audio engine 
-			static const uint32_t MAX_AUDIO_CHANNELS = 1024;
+			static const uint32_t MAX_AUDIO_CHANNELS = 16;
 
 			FMOD::System* m_audiosystem = nullptr;
 
 
-			
+			int m_nextChannelId;
 
+
+			unsigned int m_CurrentClipLength = 0;
 
 			SoundMap m_sounds;
-			ChannelMap m_loopChannels;
+			ChannelList m_channels;
 
+			
 
 		};
 

@@ -25,11 +25,11 @@ namespace FanshaweGameEngine
 
 			const bool GetLoaded() const;
 			const bool GetLooping() const;
-			const float GetVolume() const;
+			
 
 			void SetLoaded(const bool hasloaded);
 			void SetLooping(const bool shouldLoop);
-			void SetVolume(const float newVolume);
+			
 
 
 
@@ -38,7 +38,7 @@ namespace FanshaweGameEngine
 			// For now the uniqueID is the disk path for the sound
 			std::string m_uniqueId;
 
-			const char*  m_filePath;
+			const char* m_filePath;
 
 			// Stores if the Sound has been loaded into the Engine
 			bool m_hasLoaded;
@@ -46,8 +46,7 @@ namespace FanshaweGameEngine
 			// Store if the Sound is OneShot or looping
 			bool m_shouldLoop;
 
-			//Defines the current volume of the Sound
-			float m_volume;
+		
 
 
 

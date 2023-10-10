@@ -12,13 +12,17 @@ namespace FanshaweGameEngine
 			PlayPause,	//  Space Bar : toggleable
 			Quit,		// Escape
 
-			LoadClip,	// Enter
+			LoadClip,	// Tab
 			NextClip,	// Down Arrow
 			PrevClip,	// Up Arrow
 			RemoveClip,	// Delete
 
 			VolumeUp,	// numpad Plus 
-			VolumeDown	// numpad minus
+			VolumeDown,	// numpad minus
+
+			SelectClip,  // Enter
+			PitchUp,
+			PitchDown
 
 
 		};
@@ -43,12 +47,15 @@ namespace FanshaweGameEngine
 
 				if (GetAsyncKeyState(VK_SPACE) & 0x8000) buttonsData |= (1 << Key::PlayPause);
 				if (GetAsyncKeyState(VK_ESCAPE) & 0x8000) buttonsData |= (1 << Key::Quit);
-				if (GetAsyncKeyState(VK_ACCEPT) & 0x8000) buttonsData |= (1 << Key::LoadClip);
+				if (GetAsyncKeyState(VK_TAB) & 0x8000) buttonsData |= (1 << Key::LoadClip);
 				if (GetAsyncKeyState(VK_DOWN) & 0x8000) buttonsData |= (1 << Key::NextClip);
 				if (GetAsyncKeyState(VK_UP) & 0x8000) buttonsData |= (1 << Key::PrevClip);
 				if (GetAsyncKeyState(VK_DELETE) & 0x8000) buttonsData |= (1 << Key::RemoveClip);
 				if (GetAsyncKeyState(VK_ADD) & 0x8000) buttonsData |= (1 << Key::VolumeUp);
 				if (GetAsyncKeyState(VK_SUBTRACT) & 0x8000) buttonsData |= (1 << Key::VolumeDown);
+				if (GetAsyncKeyState(VK_RETURN) & 0x8000) buttonsData |= (1 << Key::SelectClip);
+				if (GetAsyncKeyState(VK_PRIOR) & 0x8000) buttonsData |= (1 << Key::PitchUp);
+				if (GetAsyncKeyState(VK_NEXT) & 0x8000) buttonsData |= (1 << Key::PitchDown);
 
 				return buttonsData;
 
@@ -64,7 +71,7 @@ namespace FanshaweGameEngine
 					break;
 				case FanshaweGameEngine::Input::Quit:	return "Escape";
 					break;
-				case FanshaweGameEngine::Input::LoadClip: return "Enter";
+				case FanshaweGameEngine::Input::LoadClip: return "Tab";
 					break;
 				case FanshaweGameEngine::Input::NextClip:	return "Down Arrow";
 					break;
@@ -76,6 +83,13 @@ namespace FanshaweGameEngine
 					break;
 				case FanshaweGameEngine::Input::VolumeDown: return "Keypad -";
 					break;
+				case FanshaweGameEngine::Input::SelectClip: return "Enter";
+					break;
+				case FanshaweGameEngine::Input::PitchUp: return "PageUp";
+					break;
+				case FanshaweGameEngine::Input::PitchDown: return "PageDown";
+					break;
+
 				default: return "";
 					break;
 

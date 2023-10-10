@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "UserInterface/CommandLineInterface.h"
 
 namespace FanshaweGameEngine
 {
@@ -11,7 +12,7 @@ namespace FanshaweGameEngine
 	}
 	using Audio::AudioClip;
 
-
+	
 	//enum 
 
 
@@ -21,7 +22,11 @@ namespace FanshaweGameEngine
 	{
 		
 		
-		
+		enum PlayerState
+		{
+			Splash,
+			Player
+		};
 
 
 
@@ -47,24 +52,28 @@ namespace FanshaweGameEngine
 			// Wrapper to load the correct clip to the audio manager
 			void LoadClip(const std::string& filePath);
 
-			// Wrapper to remove a prevoiusly loaded sound from the audio manager
-			void DeleteClip(const std::string& filePath);
+			
 
 			// Wrapper to play a sound from the current index
-			void PlayClip(const int index);
+			void PlayNewClip(const int index);
 
 			// Wrapper to change the volume of the currently playing clip
 			void SetClipVolume(const float newVolume);
 
-			//Wrapper to set the looping state of the clip before playing it
-			void SetClipLooping(const int index, const bool shouldLoop);
+			void PlayPause();
+	
 
 			//Wrapper to seek / pan along the length of the clip
 			void SetClipPan(const float newPlayLocation);
 
+			//Wrapper to seek / pan along the length of the clip
+			void SetPitch(const float newPitch);
+
 			// Bool check to see if the application is pending exit
 			const bool GetRunning() const;
 
+
+			void UnloadAllSounds();
 			
 			
 
@@ -77,10 +86,25 @@ namespace FanshaweGameEngine
 			void DrawCommandLineInterface();
 
 
+			// the index ofthe clip that is currenly playing sound
+			int m_playingClipIndex = 0;
 
-			int m_currentClipIndex = 0;
+			// the index of the clip that is selected in the UI
+			// if this is the same as playing CLip : pressing spacebar will toggle pasue/play
+			// otherwise if its different then the pressing spacebar will play the 
+			int m_selectedClipIndex = 0;
+
+
+			int m_latestChannelIndex = 0;
+
 			AudioClipList m_clipList;
 			bool m_isRunning = false;
+
+			PlayerState state;
+			
+			UI::CommandLineInterface* m_cli;
+
+
 			
 		};
 	}

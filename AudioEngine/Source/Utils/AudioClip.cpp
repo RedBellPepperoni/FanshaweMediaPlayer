@@ -10,8 +10,7 @@ namespace FanshaweGameEngine
 	{
 
 		AudioClip::AudioClip()
-			: m_filePath("")
-			, m_volume(1.0f)
+			: m_filePath("")	
 			, m_shouldLoop(false)
 			, m_hasLoaded(false)
 		{
@@ -20,7 +19,6 @@ namespace FanshaweGameEngine
 
 		AudioClip::AudioClip(const std::string& filePath, float volume, bool shouldLoop)
 			: m_filePath(filePath.c_str())
-			, m_volume(volume)
 			, m_shouldLoop(shouldLoop)
 			, m_hasLoaded(false)
 		{
@@ -53,10 +51,6 @@ namespace FanshaweGameEngine
 			return m_shouldLoop;
 		}
 
-		const float AudioClip::GetVolume() const
-		{
-			return m_volume;
-		}
 
 		void AudioClip::SetLoaded(const bool hasloaded)
 		{
@@ -68,9 +62,5 @@ namespace FanshaweGameEngine
 			m_shouldLoop = shouldLoop;
 		}
 
-		void AudioClip::SetVolume(const float newVolume)
-		{
-			m_volume = newVolume;
-		}
 	}
 }

@@ -8,6 +8,7 @@
 
 namespace FanshaweGameEngine
 {
+	// Forward Declarartion
 	using Audio::AudioManager;
 	using Input::InputManager;
 	
@@ -16,11 +17,15 @@ namespace FanshaweGameEngine
 	{
 		
 
+
 		MediaPlayer::MediaPlayer()
 		{
+			m_cli = nullptr;
+			m_cli = new UI::CommandLineInterface();
 		}
 		MediaPlayer::~MediaPlayer()
 		{
+			delete m_cli;
 		}
 
 		void MediaPlayer::Init()
@@ -30,7 +35,12 @@ namespace FanshaweGameEngine
 
 			m_isRunning = true;
 
-			DrawCommandLineInterface();
+			//DrawCommandLineInterface();
+
+			m_cli->Init();
+
+			state = PlayerState::Splash;
+			
 		}
 
 
@@ -51,23 +61,116 @@ namespace FanshaweGameEngine
 				return;
 			}
 
-
-			if (InputManager::GetKeyPressed(Input::Key::LoadClip))
+			if (InputManager::GetKeyPressed(Input::Key::SelectClip))
 			{
-				//m_clipList[m_currentClipIndex].
+				std::cout << "Enter Pressed" << std::endl;
+
+				// play the selected clip from begining
+				PlayNewClip(m_selectedClipIndex);
+
+			}
+
+			if (InputManager::GetKeyPressed(Input::Key::NextClip))
+			{
+				// Go to the next clip index
+				m_selectedClipIndex += 1;
+
+				// Out of bounds error check, if there is no next clip we loop back to the first clip in the list
+				if (m_selectedClipIndex >= m_clipList.size())
+				{
+					m_selectedClipIndex = 0;
+				}
+
+				//std::cout << "Selected Clip : " << m_clipList[m_selectedClipIndex].GetID() << std::endl;
+
+			}
+
+			if (InputManager::GetKeyPressed(Input::Key::PrevClip))
+			{
+				// Go to the next clip index
+				m_selectedClipIndex -= 1;
+
+				// Out of bounds error check, if there is no previous clip we loop back to the last clip in the list
+				if (m_selectedClipIndex < 0)
+				{
+					m_selectedClipIndex = (m_clipList.size() -1);
+				}
+
+				std::cout << "Selected Clip : " << m_clipList[m_selectedClipIndex].GetID() << std::endl;
+
 			}
 
 
 
+			if (InputManager::GetKeyPressed(Input::Key::PlayPause))
+			{
+				if (state == PlayerState::Splash)
+				{
+					state = PlayerState::Player;
+				}
+
+				else if (state == PlayerState::Player)
+				{
+					PlayPause();
+				}
+			}
+
+
+			if (InputManager::GetKeyPressed(Input::Key::VolumeUp))
+			{
+				float currentvolume = AudioManager::GetCurrent()->GetChannelVolume(m_latestChannelIndex);
+				SetClipVolume(currentvolume += 0.25f);
+			}
+
+			if (InputManager::GetKeyPressed(Input::Key::VolumeDown))
+			{
+				float currentvolume = AudioManager::GetCurrent()->GetChannelVolume(m_latestChannelIndex);
+				SetClipVolume(currentvolume -= 0.25f);
+
+			}
+
+
+			if (InputManager::GetKeyPressed(Input::Key::VolumeUp))
+			{
+				
+			}
+
 			AudioManager::Update();
 
 
+			unsigned int getClipSeek = 0;
+			AudioManager::GetCurrent()->GetPlaybackPosition(m_latestChannelIndex, getClipSeek);
+			
+			m_cli->displayData.currentPlaytime = getClipSeek;
+
+			
+
+
+			if (m_cli->displayData.currentPlaytime >= m_cli->displayData.maxPlaytime)
+			{
+				m_cli->displayData.consoleError = "Song Has Ened";
+				m_cli->displayData.isActive = false;
+
+			}
+			
+
+			m_cli->DrawFrame(state == PlayerState::Splash);
+			m_cli->SwapBuffers();
 
 
 		}
 
 		void MediaPlayer::Quit()
 		{
+			// making sure we unload all the sounds from the FMOD API before exiting teh application
+			UnloadAllSounds();
+
+			// Clearing out the data in the Clip list
+			m_clipList.clear();
+
+			// Shutting down the audio manager
+			AudioManager::Shutdown();
+
 			m_isRunning = false;
 		}
 
@@ -85,104 +188,125 @@ namespace FanshaweGameEngine
 				return;
 			}
 
+			m_cli->displayData.consoleError = newClip.GetID() + " : Loaded SuccessFully";
+
 			// The given clip was unique, so loading it
 			m_clipList.emplace_back(newClip);
 
+			m_cli->displayData.songnameList.emplace_back(newClip.GetID());
+
 			
 
 
 		}
-		void MediaPlayer::DeleteClip(const std::string& filePath)
-		{
-		}
-		void MediaPlayer::PlayClip(const int index)
-		{
-			
 
+
+		
+
+		void MediaPlayer::PlayNewClip(const int index)
+		{
+	
 			if(index >= m_clipList.size() || index < 0)
 			{ 
 				// Error Clip not found
 				return;
 			}
 
-			m_currentClipIndex = index;
 
-			AudioManager::GetCurrent()->PlaySound(m_clipList[m_currentClipIndex]);
+			//std::cout << "Playing : " << m_clipList[index].GetID() << std::endl;
+
+			m_playingClipIndex = index;
+
+			m_latestChannelIndex = AudioManager::GetCurrent()->PlayNewSound(m_clipList[m_playingClipIndex]);
+	
+
+ 			m_cli->displayData.maxPlaytime = AudioManager::GetCurrent()->GetSoundCliplength();
+			m_cli->displayData.isActive = true;
+			m_cli->displayData.isPlaying = true;
+			m_cli->displayData.audioTitle = m_clipList[m_playingClipIndex].GetID();
+
+			m_cli->displayData.consoleError = " Currently Playing : " + m_clipList[m_playingClipIndex].GetID();
 		}
 
 
 
 		void MediaPlayer::SetClipVolume(const float newVolume)
 		{
+			float volume = newVolume > 10.0f ? 10.0f : newVolume;
+		    volume = newVolume < 0.0f ? 0.0f : newVolume;
+
+			AudioManager::GetCurrent()->SetChannelVolume(m_latestChannelIndex, volume);
 		}
 
-		void MediaPlayer::SetClipLooping(const int index, const bool shouldLoop)
+		void MediaPlayer::PlayPause()
 		{
-			if (index >= m_clipList.size() || index < 0)
+		
+			if (m_cli->displayData.isActive)
 			{
-				// Error Clip not found
+				AudioManager::GetCurrent()->PlayPauseToggle(m_latestChannelIndex);
+
+				m_cli->displayData.isPlaying = !AudioManager::GetCurrent()->GetChannelPaused(m_latestChannelIndex);
+				m_cli->displayData.consoleError = " Currently Playing : " + m_clipList[m_playingClipIndex].GetID();
+
 				return;
 			}
-
-			m_currentClipIndex = index;
-
-			m_clipList[m_currentClipIndex].SetLooping(shouldLoop);
+			
 		}
+
+		
 		void MediaPlayer::SetClipPan(const float newPlayLocation)
 		{
+			float Pan = newPlayLocation > 1.0f ? 1.0f : newPlayLocation;
+			Pan = newPlayLocation < -1.0f ? -1.0f : newPlayLocation;
+
+			AudioManager::GetCurrent()->SetChannelPan(m_latestChannelIndex,Pan);
+		}
+
+		void MediaPlayer::SetPitch(const float newPitch)
+		{
+			float Pitch = newPitch > 2.0f ? 2.0f : newPitch;
+			Pitch = newPitch < 0.5f ? 0.5f : newPitch;
+
+			AudioManager::GetCurrent()->SetChannelPitch(m_latestChannelIndex,Pitch);
 		}
 
 		const bool MediaPlayer::GetRunning() const
 		{
 			return m_isRunning;
 		}
+
+
+		void MediaPlayer::UnloadAllSounds()
+		{
+			// loop through all the currently reference clips
+			for (int iterator = 0; iterator < m_clipList.size(); iterator++)
+			{
+				// Storing the clip nas a temporary ref
+				AudioClip tempClip = m_clipList[iterator];
+
+				// if the clip is loaded in the Manager, unload it
+				if (tempClip.GetLoaded())
+				{	
+					std::cout << "Media Player : Unloading Audio Clip " << tempClip.GetID() << std::endl;
+					AudioManager::GetCurrent()->UnloadSound(tempClip);
+				}
+	
+			}
+
+			std::cout << "Media Player : All clips Unloaded Successfully" << std::endl;
+
+		}
 		const std::string& MediaPlayer::GetClipName() const
 		{
-			return m_clipList[m_currentClipIndex].GetID();
+			return m_clipList[m_playingClipIndex].GetID();
 		}
 
 
-		void ClearScreen()
-		{
-			HANDLE                     hStdOut;
-			CONSOLE_SCREEN_BUFFER_INFO csbi;
-			DWORD                      count;
-			DWORD                      cellCount;
-			COORD                      homeCoords = { 0, 0 };
-
-			hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
-			if (hStdOut == INVALID_HANDLE_VALUE) return;
-
-			/* Get the number of cells in the current buffer */
-			if (!GetConsoleScreenBufferInfo(hStdOut, &csbi)) return;
-			cellCount = csbi.dwSize.X * csbi.dwSize.Y;
-
-			/* Fill the entire buffer with spaces */
-			if (!FillConsoleOutputCharacter(
-				hStdOut,
-				(TCHAR)' ',
-				cellCount,
-				homeCoords,
-				&count
-			)) return;
-
-			/* Fill the entire buffer with the current colors and attributes */
-			if (!FillConsoleOutputAttribute(
-				hStdOut,
-				csbi.wAttributes,
-				cellCount,
-				homeCoords,
-				&count
-			)) return;
-
-			/* Move the cursor home */
-			SetConsoleCursorPosition(hStdOut, homeCoords);
-		}
 
 
 		void MediaPlayer::DrawCommandLineInterface()
 		{
-			ClearScreen();
+			//ClearScreen();
 
 
 

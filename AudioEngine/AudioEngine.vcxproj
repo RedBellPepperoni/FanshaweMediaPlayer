@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Utils\Channel.h" />
     <ClInclude Include="Source\Manager\AudioManager.h" />
     <ClInclude Include="Source\Utils\AudioClip.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Utils\Channel.cpp" />
     <ClCompile Include="Source\Manager\AudioManager.cpp" />
     <ClCompile Include="Source\Utils\AudioClip.cpp" />
   </ItemGroup>
