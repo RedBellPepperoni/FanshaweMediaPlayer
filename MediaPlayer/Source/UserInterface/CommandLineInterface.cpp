@@ -371,6 +371,46 @@ namespace FanshaweGameEngine
 			}
 		}
 
+		std::string CommandLineInterface::GetTimeString(int miliseconds)
+		{
+			std::string finalTime;
+			std::string textSec;
+			std::string textMin;
+
+
+			int timeSeconds = miliseconds / 1000;
+
+			// the number of minutes
+			int timeMin = timeSeconds / 60;
+
+			// number of seconds
+			int remainderSec = timeSeconds % 60;
+
+			textSec = std::to_string(remainderSec);
+			textMin = std::to_string(timeMin);
+
+			if (remainderSec < 10)
+			{
+				textSec = '0' + textSec;
+			}
+			
+			if (timeMin > 59)
+			{
+				textMin = "59";
+			}
+			if (timeMin < 10)
+			{
+				textMin = '0' + textMin;
+			}
+
+			finalTime = textMin + ':' + textSec;
+
+			return finalTime;
+
+
+
+		}
+
 		void CommandLineInterface::AddBorder(int lineStartIndex)
 		{
 
@@ -634,14 +674,14 @@ namespace FanshaweGameEngine
 
 
 			
-			OutputTextLine(selectorLayout, 20, "      //\\\\       \\\\  //        _|_      ___      \\/ ", controlattrib, controlattrib, textAlign::Left);
-			OutputTextLine(selectorLayout, 21, "     //  \\\\       \\\\//          |                /\\", controlattrib, controlattrib, textAlign::Left);
-			OutputTextLine(selectorLayout, 23, "   Next Song    Prev Song      Vol +    Vol -   QUIT ", controlattrib, controlattrib, textAlign::Left);
+			OutputTextLine(selectorLayout, 20, "      //\\\\       \\\\  //        _|_      ___      [=|=] ", controlattrib, controlattrib, textAlign::Left);
+			OutputTextLine(selectorLayout, 21, "     //  \\\\       \\\\//          |                [=|=]", controlattrib, controlattrib, textAlign::Left);
+			OutputTextLine(selectorLayout, 23, "   Next Song    Prev Song      Vol +    Vol -   PlaySong ", controlattrib, controlattrib, textAlign::Left);
 			
 
 
 			// Hard coding the values, but can be pulled from the input manager later
-			OutputTextLine(selectorLayout, 24, "    (PageUp)    (PageDown)    (Num+)   (Num-)   (Esc)", controlattrib, controlattrib, textAlign::Left);
+			OutputTextLine(selectorLayout, 24, "    (PageUp)    (PageDown)    (Num+)   (Num-)   (Enter)", controlattrib, controlattrib, textAlign::Left);
 		
 
 
@@ -658,12 +698,10 @@ namespace FanshaweGameEngine
 			
 			
 
-			const std::string seekLayout = "      [---------------------------------------]      ";
-
 			// basic Layout
 			//OutputTextLine(playerLayout, , seekLayout , controlattrib, textAlign::Center);
 			
-			int editIndex = (lineNumber * m_screenSize.X) + 11;
+			int editIndex = (lineNumber * m_screenSize.X);
 
 			// Divide by zero error solving
 			if (displayData.maxPlaytime <= 0)
@@ -672,20 +710,29 @@ namespace FanshaweGameEngine
 			}
 
 
-			/*int maxTimeSec = displayData.maxPlaytime / 100;
-			int maxtimeMin = maxTimeSec / 60;
-			int finalRemainderSec = maxTimeSec - (maxtimeMin * 60);*/
-
-
-
-			float tempSeekCalc = (float)displayData.currentPlaytime* 40.0f / (float)displayData.maxPlaytime;
-
+			
+			std::string timeSeek = GetTimeString(displayData.currentPlaytime);
+	
+			for (int i = 0; i < timeSeek.length(); i++)
+			{
+				m_frameData[editIndex + 3 + i].Char.UnicodeChar = timeSeek[i];
+				m_frameData[editIndex + 3 + i].Attributes = controlattrib;
+			}
+			
+			std::string timeMax = GetTimeString(displayData.maxPlaytime);
+			
+			for (int i = 0; i < timeMax.length(); i++)
+			{
+				m_frameData[editIndex + 53 + i].Char.UnicodeChar = timeMax[i];
+				m_frameData[editIndex + 53 + i].Attributes = controlattrib;
+			}
+			
+			float tempSeekCalc = (float)displayData.currentPlaytime * 40.0f / (float)displayData.maxPlaytime;
 			int seekPosition = (int)tempSeekCalc;
 			seekPosition = seekPosition % 40;
-		
-
-			m_frameData[editIndex + seekPosition].Char.UnicodeChar = '#';
-			m_frameData[editIndex + seekPosition].Attributes = controlattrib;
+			
+			m_frameData[editIndex + 11 + seekPosition].Char.UnicodeChar = '#';
+			m_frameData[editIndex + 11+ seekPosition].Attributes = controlattrib;
 
 			
 

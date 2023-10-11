@@ -101,7 +101,7 @@ namespace FanshaweGameEngine
 			void OutputCharLine(layout Layout , int lineNumber, const char Char, int attribute = 30);
 
 			
-			
+			std::string GetTimeString(int miliseconds);
 
 			void AddBorder(int lineStartIndex);
 			void AddMidLine(int lineindex, int lineendIndex);
