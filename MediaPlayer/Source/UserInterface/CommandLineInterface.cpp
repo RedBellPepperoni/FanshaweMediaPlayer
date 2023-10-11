@@ -5,6 +5,7 @@
 #include <math.h>
 
 
+
 namespace FanshaweGameEngine
 {
 	namespace UI
@@ -12,6 +13,7 @@ namespace FanshaweGameEngine
 		
 	
 		float colorchange = 0;
+		float colorchangetwo = 0;
 
 		CommandLineInterface::CommandLineInterface()
 		{
@@ -63,6 +65,9 @@ namespace FanshaweGameEngine
 		void CommandLineInterface::ShowSplashScreen()
 		{
 			layout splashLayout = layout::Console;
+
+			
+
 	
 			OutputCharLine(splashLayout,0, '=');
 			OutputCharLine(splashLayout, 1, ' ');
@@ -70,18 +75,24 @@ namespace FanshaweGameEngine
 			OutputCharLine(splashLayout, 3, ' ',3);
 
 
-			OutputTextLine(splashLayout, 4, "This is a Media Player made using a C++ Command line interface",3);
+			OutputTextLine(splashLayout, 4, "This is a Media Player made using a C++ Command line interface",3,3);
 
 			OutputCharLine(splashLayout, 5, ' ',3);
 
-			OutputTextLine(splashLayout, 6, "This also a small experiment to see if a cmd GUI is possible",3);
+			OutputTextLine(splashLayout, 6, "This also a small experiment to see if a cmd GUI is possible",3,3);
 
 			OutputCharLine(splashLayout, 7, '.',3);
 			OutputCharLine(splashLayout, 8, ' ');
 
-			OutputTextLine(splashLayout, 9, "[ DISCLAIMER ]",  90);
+
+			
+
+		
+
+
+			OutputTextLine(splashLayout, 9, "[ DISCLAIMER ]", 90, 90);
 			OutputCharLine(splashLayout, 10, '-',90);
-			OutputTextLine(splashLayout, 11, " Please do not resize the console window, since that will break the UI",90);
+			OutputTextLine(splashLayout, 11, " Please do not resize the console window, since that will break the UI",90,90);
 			OutputCharLine(splashLayout, 12, '-',90);
 			OutputCharLine(splashLayout, 13, ' ',90);
 			OutputCharLine(splashLayout, 14, ' ');
@@ -105,7 +116,7 @@ namespace FanshaweGameEngine
 			int colorAtt = round(colorchange);
 			colorAtt = colorAtt % 5;
 
-			OutputTextLine(splashLayout, 27, "Press SpaceBar to Continue . . .", colorAtt );
+			OutputTextLine(splashLayout, 27, "Press SpaceBar to Continue . . .", colorAtt,colorAtt );
 			OutputCharLine(splashLayout, 28, ' ');
 			OutputCharLine(splashLayout, 29, '=');
 			
@@ -159,12 +170,15 @@ namespace FanshaweGameEngine
 			// Clear the Back Buffer
 			//WriteConsole(m_backBuffer, &m_frameData.front(), static_cast<short>(m_frameData.size()), nullptr, nullptr);
 
+
+			// Override the backbuffer with the frame data
 			bool success = WriteConsoleOutput(m_backBuffer, m_frameData.data(), m_screenSize, m_TopLeft, &m_srctWriteRect);
 
-			// Swap to the back buffer
+			// Set the back buffer as the active buffer
 			SetConsoleActiveScreenBuffer(m_backBuffer);
 
-			// Swap Buffers
+
+			// Swap Buffers pointer
 			m_backBuffer = bufferSwitch ? m_firstBuffer : m_secondBuffer;
 
 			// Toggle the bool so that the other buffer will be used next time
@@ -185,7 +199,7 @@ namespace FanshaweGameEngine
 		}
 
 
-		void CommandLineInterface::OutputTextLine(layout Layout,int lineNumber, const std::string text,int attribute,textAlign align)
+		void CommandLineInterface::OutputTextLine(layout Layout,int lineNumber, const std::string text, int textattrib, int attribute, textAlign align)
 		{
 			int remainingCharacters = 0;
 			
@@ -213,19 +227,14 @@ namespace FanshaweGameEngine
 				// Drawing Left Border
 				AddBorder(lineStartIndex);
 
-
+				// If we are drawing for the selector we start from the center of the line
 				if (Layout == FanshaweGameEngine::UI::CommandLineInterface::Selector)
 				{
-					lineStartIndex = lineStartIndex + m_screenSize.X / 2 - 2;
-				
+					lineStartIndex = lineStartIndex + m_screenSize.X / 2 - 2;	
 				}
-
-				
 
 				int textItr = 0;
 				int center = 0;
-
-
 
 
 				switch (align)
@@ -241,7 +250,7 @@ namespace FanshaweGameEngine
 						if (textItr < text.size())
 						{
 							m_frameData[i].Char.UnicodeChar = text[textItr];
-							m_frameData[i].Attributes = attribute;
+							m_frameData[i].Attributes = textattrib;
 							textItr++;
 						}
 						else
@@ -264,7 +273,7 @@ namespace FanshaweGameEngine
 						if (textItr >= 0)
 						{
 							m_frameData[i].Char.UnicodeChar = text[textItr];
-							m_frameData[i].Attributes = 30;
+							m_frameData[i].Attributes = textattrib;
 							textItr--;
 						}
 						else
@@ -288,7 +297,7 @@ namespace FanshaweGameEngine
 						if (textItr < text.size() && i >= center)
 						{
 							m_frameData[i].Char.UnicodeChar = text[textItr];
-							m_frameData[i].Attributes = attribute;
+							m_frameData[i].Attributes = textattrib;
 							textItr++;
 						}
 						else
@@ -414,10 +423,11 @@ namespace FanshaweGameEngine
 		// Title
 
 			layout titleLayout = layout::Console;
+			
 
 			OutputCharLine(titleLayout,0, '=');
 			OutputCharLine(titleLayout, 1, ' ', 3);
-			OutputTextLine(titleLayout, 2, "[MEDIA PLAYER : FMOD API]", 3);
+			OutputTextLine(titleLayout, 2, "[MEDIA PLAYER : FMOD API]", 3,3);
 			OutputCharLine(titleLayout, 3, ' ', 3);
 			OutputCharLine(titleLayout, 4, '=');
 
@@ -430,12 +440,13 @@ namespace FanshaweGameEngine
 		void CommandLineInterface::LayoutErrorConsole()
 		{
 			layout consoleLayout = layout::Console;
+			
 
-			OutputCharLine(consoleLayout,25, '_',3);
+			OutputCharLine(consoleLayout,25, '_');
 			OutputCharLine(consoleLayout, 26, ' ', 3);
-			OutputTextLine(consoleLayout, 27, displayData.consoleError, 3);
+			OutputTextLine(consoleLayout, 27, displayData.consoleError, 3, 3);
 			OutputCharLine(consoleLayout, 28, ' ', 3);
-			OutputCharLine(consoleLayout, 29, '_',3);
+			OutputCharLine(consoleLayout, 29, '_');
 		}
 
 
@@ -446,115 +457,192 @@ namespace FanshaweGameEngine
 		void CommandLineInterface::LayoutPLayer()
 		{
 			
-			const int controlattrib = 14;
+			// number 2 is green on black
+			// 14 is yellow on black
+			// 30 is white on blue
 
-			std::string audioClipName = displayData.audioTitle;
+			//coloe for controls
+			const int controlattrib = FOREGROUND_GREEN | FOREGROUND_RED ;
+			// the background
+			const int songnameAttrib = FOREGROUND_GREEN | FOREGROUND_RED | FOREGROUND_INTENSITY ;
+			const int playerAttrib =  FOREGROUND_BLUE | FOREGROUND_GREEN |FOREGROUND_RED | FOREGROUND_INTENSITY| BACKGROUND_GREEN | BACKGROUND_BLUE;
+			const int viewAttrib = 14;
+			const int playerStateAttrib =  BACKGROUND_GREEN | BACKGROUND_RED ;
+			const int seekAttrib = 14;
+
+
+			std::string audioClipName =  displayData.audioTitle;
 
 			layout playerLayout = layout::Player;
 			//OutputCharLine(playerLayout, 5, ' ', controlattrib);
-			OutputTextLine(playerLayout, 5, displayData.isActive ? "[ Now Playing ]" : "[Paused]", controlattrib, textAlign::Center);
-			OutputCharLine(playerLayout, 6, '-', controlattrib);
-			OutputCharLine(playerLayout, 7, ' ', controlattrib);
-			OutputTextLine(playerLayout, 8, audioClipName, controlattrib);
-			OutputCharLine(playerLayout, 9, '_', controlattrib);
+			OutputTextLine(playerLayout, 5, displayData.isPlaying ? "[   Now Playing   ]" : "[      Paused     ]", playerStateAttrib, playerStateAttrib,textAlign::Center);
+			OutputCharLine(playerLayout, 6, '-', playerStateAttrib);
+			OutputCharLine(playerLayout, 7, ' ', playerAttrib);
+			OutputTextLine(playerLayout, 8, audioClipName, songnameAttrib, playerAttrib);
+			OutputCharLine(playerLayout, 9, '_', playerAttrib);
 
 			//
 
-			OutputTextLine(playerLayout, 10, "|  *    .  *       .             *       |", controlattrib);
-			OutputTextLine(playerLayout, 11, "|                         *              |", controlattrib);
-			OutputTextLine(playerLayout, 12, "| *   .        *       .       .       * |", controlattrib);
-			OutputTextLine(playerLayout, 13, "|   .     *                              |", controlattrib);
-			OutputTextLine(playerLayout, 14, "|          .     .  *        *           |", controlattrib);
+			OutputTextLine(playerLayout, 10, "|  *    .  *       .             *       |", viewAttrib, playerAttrib);
+			OutputTextLine(playerLayout, 11, "|                         *              |", viewAttrib, playerAttrib);
+			OutputTextLine(playerLayout, 12, "| *   .        *       .       .       * |", viewAttrib, playerAttrib);
+			OutputTextLine(playerLayout, 13, "|   .     *                              |", viewAttrib, playerAttrib);
+			OutputTextLine(playerLayout, 14, "|          .     .  *        *           |", viewAttrib, playerAttrib);
 			
 	
-			OutputCharLine(playerLayout, 15, '-', controlattrib);
-			OutputCharLine(playerLayout, 16, ' ', controlattrib);
+			OutputCharLine(playerLayout, 15, '-', playerAttrib);
+			OutputCharLine(playerLayout, 16, ' ', playerAttrib);
 
 			
 
 			// The Audio - seek/ Slider
-			const std::string seekLayout = "      [---------------------------------------]      ";
+			const std::string seekLayout = "[---------------------------------------]";
 
 			// basic Layout
-			OutputTextLine(playerLayout, 17, seekLayout, controlattrib, textAlign::Center);
+			OutputTextLine(playerLayout, 17, seekLayout, seekAttrib, playerAttrib ,textAlign::Center);
 
 			UpdateAudioSeek(17);
 
 			
 
-			OutputCharLine(playerLayout, 18, '_', controlattrib);
+			OutputCharLine(playerLayout, 18, '_', playerAttrib);
 			OutputCharLine(playerLayout, 19, ' ', controlattrib);
-			OutputTextLine(playerLayout, 20, "    /           |\\           \\         _|_       ___", controlattrib, textAlign::Left);
-			OutputTextLine(playerLayout, 21, "    \\           |/           /          |           ", controlattrib, textAlign::Left);
+
+
 			OutputCharLine(playerLayout, 22, ' ', controlattrib);
+			
 
 
+			if (!displayData.isPlaying)
+			{
+				OutputTextLine(playerLayout, 20, "     |\\        /\\         \\  /        //         \\\\", controlattrib, controlattrib, textAlign::Left);
+				OutputTextLine(playerLayout, 21, "     |/       /  \\         \\/         \\\\         //", controlattrib, controlattrib, textAlign::Left);
+				OutputTextLine(playerLayout, 23, "    Play      Pitch+      Pitch-    PanLeft    PanRight", controlattrib, controlattrib, textAlign::Left);
+			}
+			else
+			{
+				OutputTextLine(playerLayout, 20, "     ||        /\\         \\  /        //         \\\\", controlattrib, controlattrib, textAlign::Left);
+				OutputTextLine(playerLayout, 21, "     ||       /  \\         \\/         \\\\         //", controlattrib, controlattrib, textAlign::Left);
+				OutputTextLine(playerLayout, 23, "    Pause     Pitch+      Pitch-    PanLeft    PanRight", controlattrib, controlattrib,textAlign::Left);
+			}
+			
+			
 
-
-			OutputTextLine(playerLayout, 23, " PanLeft    Play\\Pause    PanRight     Vol+      Vol-", controlattrib, textAlign::Left);
-			OutputTextLine(playerLayout, 24, "  (Left)     (Spacebar)     (Right)     (Up)     (Down)", controlattrib, textAlign::Left);
+			// Hard coding the values, but can be pulled from the input manager later
+			OutputTextLine(playerLayout, 24, " (Spacebar)  (PageUp)  (PageDown)    (Left)    (Right)", controlattrib, controlattrib,textAlign::Left);
 		}
 
 		void CommandLineInterface::LayoutAudioSelection()
 		{
 			const int controlattrib = 12;
+			const int selectAttrib = BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_INTENSITY |FOREGROUND_RED | FOREGROUND_INTENSITY;
+			const int playerStateAttrib = BACKGROUND_GREEN | BACKGROUND_RED;
+
+			const int highlightAttrib = BACKGROUND_INTENSITY | FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN| FOREGROUND_INTENSITY;
+
 
 			std::string audioClipName = displayData.audioTitle;
 
-			layout playerLayout = layout::Selector;
+			layout selectorLayout = layout::Selector;
 			//OutputCharLine(playerLayout, 5, ' ', controlattrib);
-			OutputTextLine(playerLayout, 5, "[ Select Audio Clip ]", controlattrib, textAlign::Center);
-			OutputCharLine(playerLayout, 6, '-', controlattrib);
-			OutputCharLine(playerLayout, 7, ' ', controlattrib);
+			OutputTextLine(selectorLayout, 5, "[ Select Audio Clip ]", playerStateAttrib, playerStateAttrib, textAlign::Center);
+			OutputCharLine(selectorLayout, 6, '-', playerStateAttrib);
+			OutputCharLine(selectorLayout, 7, ' ', selectAttrib);
 				
 			
 
-			std::string song1 = " ";
-			std::string song2 = " ";
-			std::string song3 = " ";
-			std::string song4 = " ";
-			std::string song5 = " ";
-			std::string song6 = " ";
-			std::string song7 = " ";
-			std::string song8 = " ";
+			std::vector<std::string> songs = { "0", "1","2","3","4","5","6","7","8" };
 
-			song1 = displayData.songnameList.size() > 0 ? displayData.songnameList[0] : " ";
-			song2 = displayData.songnameList.size() > 1 ? displayData.songnameList[1] : " ";
-			song3 = displayData.songnameList.size() > 2 ? displayData.songnameList[2] : " ";
-			song4 = displayData.songnameList.size() > 3 ? displayData.songnameList[3] : " ";
-			song5 = displayData.songnameList.size() > 4 ? displayData.songnameList[4] : " ";
-			song6 = displayData.songnameList.size() > 5 ? displayData.songnameList[5] : " ";
-			song7 = displayData.songnameList.size() > 6 ? displayData.songnameList[6] : " ";
-			song8 = displayData.songnameList.size() > 7 ? displayData.songnameList[7] : " ";
+		
+
+			int offsetedIndex = 0;
+			int displayIndex = displayData.selectedSongIndex;
+
+			int count = songs.size();
+
+			if (displayData.selectedSongIndex >= count)
+			{
+				offsetedIndex = displayData.selectedSongIndex - (songs.size() - 1);
+				displayIndex = 8;
+
+				for (int i = 0; i < songs.size(); i++)
+				{
+				   songs[i] = displayData.songnameList[i + offsetedIndex];
+				}
+			}
+			
+			else
+			{
+				for (int i = 0; i < songs.size(); i++)
+				{
+					if (displayData.songnameList.size() > i)
+					{
+						songs[i] = displayData.songnameList[i];
+					}
+					else
+					{
+						songs[i] = " ";
+					}
+
+				}
+			}
+
+			
+			
+
+			
 
 			//
-			OutputTextLine(playerLayout, 8, song1, controlattrib);
-			OutputTextLine(playerLayout, 9, song2, controlattrib);
-			OutputTextLine(playerLayout, 10, song3, controlattrib);
-			OutputTextLine(playerLayout, 11, song4, controlattrib);
-			OutputTextLine(playerLayout, 12, song5, controlattrib);
-			OutputTextLine(playerLayout, 13, song6, controlattrib);
-			OutputTextLine(playerLayout, 14, song7, controlattrib);
-			OutputTextLine(playerLayout, 15, song8, controlattrib);
-			
-			
-
-
-
-			OutputCharLine(playerLayout, 16, ' ', controlattrib);
-			OutputCharLine(playerLayout, 17, ' ', controlattrib);
-
+			OutputTextLine(selectorLayout, 8, songs[0], selectAttrib, selectAttrib);
+			OutputTextLine(selectorLayout, 9, songs[1], selectAttrib, selectAttrib);
+			OutputTextLine(selectorLayout, 10, songs[2], selectAttrib, selectAttrib);
+			OutputTextLine(selectorLayout, 11, songs[3], selectAttrib, selectAttrib);
+			OutputTextLine(selectorLayout, 12, songs[4], selectAttrib, selectAttrib);
+			OutputTextLine(selectorLayout, 13, songs[5], selectAttrib, selectAttrib);
+			OutputTextLine(selectorLayout, 14, songs[6], selectAttrib, selectAttrib);
+			OutputTextLine(selectorLayout, 15, songs[7], selectAttrib, selectAttrib);
+			OutputTextLine(selectorLayout, 16, songs[8], selectAttrib, selectAttrib);
 			
 
-
-			OutputCharLine(playerLayout, 18, '_', controlattrib);
-			OutputCharLine(playerLayout, 19, ' ', controlattrib);
-			OutputCharLine(playerLayout, 20, ' ', controlattrib);
-			OutputCharLine(playerLayout, 21, ' ', controlattrib);
-			OutputCharLine(playerLayout, 22, ' ', controlattrib);
-			OutputCharLine(playerLayout, 23, ' ', controlattrib);
-			OutputCharLine(playerLayout, 24, ' ', controlattrib);
 			
+			int offsetSongLineIndex = displayData.selectedSongIndex + 8;
+
+			if (offsetSongLineIndex > 16)
+			{
+				offsetSongLineIndex = 16;
+			}
+			else if (offsetSongLineIndex < 8)
+			{
+				offsetSongLineIndex = 8;
+			}
+
+		
+
+			OutputTextLine(selectorLayout, offsetSongLineIndex, songs[displayIndex], highlightAttrib, highlightAttrib);
+
+			
+			OutputCharLine(selectorLayout, 17, ' ', selectAttrib);
+
+			
+
+			OutputCharLine(selectorLayout, 18, '_', selectAttrib);
+			OutputCharLine(selectorLayout, 19, ' ', controlattrib);
+
+
+			OutputCharLine(selectorLayout, 22, ' ', controlattrib);
+
+
+
+			
+			OutputTextLine(selectorLayout, 20, "      //\\\\       \\\\  //        _|_      ___      \\/ ", controlattrib, controlattrib, textAlign::Left);
+			OutputTextLine(selectorLayout, 21, "     //  \\\\       \\\\//          |                /\\", controlattrib, controlattrib, textAlign::Left);
+			OutputTextLine(selectorLayout, 23, "   Next Song    Prev Song      Vol +    Vol -   QUIT ", controlattrib, controlattrib, textAlign::Left);
+			
+
+
+			// Hard coding the values, but can be pulled from the input manager later
+			OutputTextLine(selectorLayout, 24, "    (PageUp)    (PageDown)    (Num+)   (Num-)   (Esc)", controlattrib, controlattrib, textAlign::Left);
+		
 
 
 
@@ -602,6 +690,46 @@ namespace FanshaweGameEngine
 			
 
 			
+		}
+
+		// 
+		// Taken from https://learn.microsoft.com/en-us/windows/console/clearing-the-screen
+		// Example 2 to clear the scrolling screen 
+		void CommandLineInterface::ClearScreen()
+		{
+			CONSOLE_SCREEN_BUFFER_INFO csbi;
+			SMALL_RECT scrollRect;
+			COORD scrollTarget;
+			CHAR_INFO fill;
+
+			// Get the number of character cells in the current buffer.
+			if (!GetConsoleScreenBufferInfo(m_firstBuffer, &csbi))
+			{
+				return;
+			}
+
+			// Scroll the rectangle of the entire buffer.
+			scrollRect.Left = 0;
+			scrollRect.Top = 0;
+			scrollRect.Right = csbi.dwSize.X;
+			scrollRect.Bottom = csbi.dwSize.Y;
+
+			// Scroll it upwards off the top of the buffer with a magnitude of the entire height.
+			scrollTarget.X = 0;
+			scrollTarget.Y = (SHORT)(0 - csbi.dwSize.Y);
+
+			// Fill with empty spaces with the buffer's default text attribute.
+			fill.Char.UnicodeChar = TEXT(' ');
+			fill.Attributes = csbi.wAttributes;
+
+			// Do the scroll
+			ScrollConsoleScreenBuffer(m_firstBuffer, &scrollRect, NULL, scrollTarget, &fill);
+
+			// Move the cursor to the top left corner too.
+			csbi.dwCursorPosition.X = 0;
+			csbi.dwCursorPosition.Y = 0;
+
+			SetConsoleCursorPosition(m_firstBuffer, csbi.dwCursorPosition);
 		}
 
 		

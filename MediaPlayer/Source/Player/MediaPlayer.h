@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "UserInterface/CommandLineInterface.h"
+#include <memory>
+
 
 namespace FanshaweGameEngine
 {
@@ -12,7 +13,11 @@ namespace FanshaweGameEngine
 	}
 	using Audio::AudioClip;
 
-	
+	namespace UI
+	{
+		class CommandLineInterface;
+	}
+
 	//enum 
 
 
@@ -50,7 +55,7 @@ namespace FanshaweGameEngine
 			void Quit();
 			
 			// Wrapper to load the correct clip to the audio manager
-			void LoadClip(const std::string& filePath);
+			void LoadClip(const std::string& filePath, bool isStreamed = false);
 
 			
 
@@ -64,10 +69,12 @@ namespace FanshaweGameEngine
 	
 
 			//Wrapper to seek / pan along the length of the clip
-			void SetClipPan(const float newPlayLocation);
+			void SetClipPan(const float newPan);
 
 			//Wrapper to seek / pan along the length of the clip
-			void SetPitch(const float newPitch);
+			void SetClipPitch(const float newPitch);
+
+			
 
 			// Bool check to see if the application is pending exit
 			const bool GetRunning() const;
@@ -83,7 +90,7 @@ namespace FanshaweGameEngine
 			const std::string& GetClipName() const;
 
 			
-			void DrawCommandLineInterface();
+			
 
 
 			// the index ofthe clip that is currenly playing sound
@@ -94,15 +101,19 @@ namespace FanshaweGameEngine
 			// otherwise if its different then the pressing spacebar will play the 
 			int m_selectedClipIndex = 0;
 
-
+			// The channel what is playing the audio. (the lastest one that was given a sound to play)
 			int m_latestChannelIndex = 0;
 
+			// A Storage container to store all the loaded clips sequentially
 			AudioClipList m_clipList;
+
 			bool m_isRunning = false;
 
+			// The current state of teh User Interface
 			PlayerState state;
 			
-			UI::CommandLineInterface* m_cli;
+			// The Reference to the Command line UI
+			std::unique_ptr<UI::CommandLineInterface> m_cmdUI;
 
 
 			

@@ -32,8 +32,5 @@
     <ClCompile Include="Source\Utils\AudioClip.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Utils\Channel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

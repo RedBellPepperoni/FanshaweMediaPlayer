@@ -21,6 +21,7 @@ namespace FanshaweGameEngine
 		class CommandLineInterface
 		{
 
+			// Helps to snap text in the UI
 			enum textAlign
 			{
 				Left,
@@ -28,11 +29,14 @@ namespace FanshaweGameEngine
 				Center
 			};
 
+
+			// Defines the layout for the UI display
 			enum layout
 			{
-				Console,
-				Player,
-				Selector
+				
+				Console,  // Full screen usgae
+				Player,   // Uses the first half ofthe screen (left side)
+				Selector  // uses teh other half (right side)
 			};
 
 
@@ -44,17 +48,31 @@ namespace FanshaweGameEngine
 			{
 				std::string audioTitle;
 
+				// The current channels's volume
 				float chVolume;
+
+				// the total playtime of the current audio 
 				unsigned int maxPlaytime;
+
+				// The current seek position of the playback
 				unsigned int currentPlaytime;
+
+				// current Pan value
 				float pan;
 
+				// some song is loaded and the channel is active (either playing or paused, but has an audio)
 				bool isActive;
+
+				// The channel is paused or playing
 				bool isPlaying;
 
+				// The error value to display to the Console
 				std::string consoleError;
 
+				// name list cahce for all the currently loaded songs
 				std::vector<std::string> songnameList;
+
+				int selectedSongIndex = 0;
 
 			};
 
@@ -75,9 +93,11 @@ namespace FanshaweGameEngine
 
 			COORD GetScreenSize();
 
+			void ClearScreen();
+
 		private:
 
-			void OutputTextLine(layout Layout , int lineNumber,const std::string text ,int attribute = 30,textAlign align = textAlign::Center );
+			void OutputTextLine(layout Layout , int lineNumber,const std::string text ,int textattrib = 30 ,int attribute = 30, textAlign align = textAlign::Center );
 			void OutputCharLine(layout Layout , int lineNumber, const char Char, int attribute = 30);
 
 			
@@ -95,6 +115,8 @@ namespace FanshaweGameEngine
 
 			void UpdateAudioSeek(int lineNumber);
 			
+			
+
 
 			const char border = '|';
 			const char space = ' ';
