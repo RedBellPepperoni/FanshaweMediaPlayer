@@ -28,7 +28,7 @@ Usage:<br>
 <br>
 <br>
 
-> ![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaDisclaimer.gif)
+ ![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaDisclaimer.gif)
 <br>
 <br>
 
@@ -37,7 +37,7 @@ Usage:<br>
 <br>
 <br>
 
-> ![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaPlayback.gif)
+ ![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaPlayback.gif)
 <br>
 <br>
 
@@ -45,6 +45,6 @@ Usage:<br>
 <br>
 <br>
 
-> ![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaSelect.gif)
+ ![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaSelect.gif)
 <br>
 <br>
