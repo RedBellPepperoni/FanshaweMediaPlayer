@@ -3,6 +3,7 @@
 
 ## Installation notes:<br>
 <br>
+
 > Step 1: Pull the Repository<br>
 >
 > Step 2: Open the MediaFanshawr.sln and compile both the Projects [AudioEngine](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/AudioEngine/AudioEngine.vcxproj "AudioEngine") and [MediaPLayer](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/MediaPlayer/MediaPlayer.vcxproj "MediaPlayer")<br>
@@ -11,6 +12,7 @@
 
 ## Usage:<br>
 <br> 
+
 > Set [MediaPLayer](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/MediaPlayer/MediaPlayer.vcxproj "MediaPlayer") as the startup project and build+run to run Media Player Lib<br>
 >
 > The Disclaimer Should Pop up : Press 'Spacebar' to Continue to the Player<br>
