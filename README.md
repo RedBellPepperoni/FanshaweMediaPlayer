@@ -1,7 +1,7 @@
 # Fanshawe Media Player <br>
  Term-1 : Assignment to create an Audio Manager using FMOD API and a Media player to control the Audio manager <br>
 
-Installion notes:<br>
+Installation notes:<br>
 <br>
 > Step 1: Pull the Repository<br>
 >
@@ -20,28 +20,31 @@ Usage:<br>
 <br>
 
 
+
+
+
 <br>
-The Splash screen made using the Double buffered console terminal 
+> The Splash screen made using the Double buffered console terminal 
 <br>
 <br>
 
-![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaDisclaimer.gif)
+> ![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaDisclaimer.gif)
 <br>
 <br>
 
 
-The Media playback panel with the seek slider showing the progress of the song
+> The Media playback panel with the seek slider showing the progress of the song
 <br>
 <br>
 
-![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaPlayback.gif)
+> ![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaPlayback.gif)
 <br>
 <br>
 
-The Media selector panel showing the song selection
+> The Media selector panel showing the song selection
 <br>
 <br>
 
-![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaSelect.gif)
+> ![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaSelect.gif)
 <br>
 <br>
