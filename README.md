@@ -21,7 +21,8 @@ Usage:<br>
 
 
 <br>
-The Splash screen made using the Double buffered console terminal
+The Splash screen made using the Double buffered console terminal <br>
+
 ![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaDisclaimer.gif)
 <br>
 <br>
