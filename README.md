@@ -21,18 +21,27 @@ Usage:<br>
 
 
 <br>
-The Splash screen made using the Double buffered console terminal <br>
+The Splash screen made using the Double buffered console terminal 
+<br>
+<br>
 
 ![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaDisclaimer.gif)
 <br>
 <br>
 
+
 The Media playback panel with the seek slider showing the progress of the song
+<br>
+<br>
+
 ![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaPlayback.gif)
 <br>
 <br>
 
 The Media selector panel showing the song selection
+<br>
+<br>
+
 ![](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/mediaSelect.gif)
 <br>
 <br>
