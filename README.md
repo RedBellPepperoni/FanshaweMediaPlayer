@@ -23,7 +23,7 @@ Usage:<br>
 
 
 
-<br>
+
 > The Splash screen made using the Double buffered console terminal 
 <br>
 <br>
