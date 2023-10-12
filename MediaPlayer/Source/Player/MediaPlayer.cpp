@@ -144,7 +144,7 @@ namespace FanshaweGameEngine
 
 
 				float currentvolume = AudioManager::GetCurrent()->GetChannelVolume(m_latestChannelIndex);
-				SetClipVolume(currentvolume += 0.20f);
+				SetClipVolume(currentvolume += 0.10f);
 
 				m_cmdUI->displayData.consoleError = "Volume+ : " + std::to_string(AudioManager::GetCurrent()->GetChannelVolume(m_latestChannelIndex));
 			}
@@ -152,7 +152,7 @@ namespace FanshaweGameEngine
 			if (InputManager::GetKeyPressed(Input::Key::VolumeDown))
 			{
 				float currentvolume = AudioManager::GetCurrent()->GetChannelVolume(m_latestChannelIndex);
-				SetClipVolume(currentvolume -= 0.20f);
+				SetClipVolume(currentvolume -= 0.10f);
 
 				m_cmdUI->displayData.consoleError = "Volume- : " + std::to_string(AudioManager::GetCurrent()->GetChannelVolume(m_latestChannelIndex));
 
@@ -239,6 +239,9 @@ namespace FanshaweGameEngine
 			if (!std::filesystem::exists(filePath))
 			{
 				m_cmdUI->displayData.consoleError = filePath + " : File doesn't exist";
+
+				
+
 				return;
 			}
 

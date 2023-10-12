@@ -61,7 +61,7 @@ int main(int argc, char* argv)
 
 	for (int i = 0; i < audioFileList.size(); i++)
 	{	
-		std::cout << audioFileList[i] << std::endl;
+		std::cout << "Loading : " << audioFileList[i] << std::endl;
 		mediaPlayer->LoadClip(audioFileList[i]);
 	}
 
