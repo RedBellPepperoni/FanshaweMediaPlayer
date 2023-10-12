@@ -11,6 +11,7 @@
 > Step 1: Pull the Repository<br>
 >
 > Step 2: Open the MediaFanshawr.sln and compile both the Projects [AudioEngine](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/AudioEngine/AudioEngine.vcxproj "AudioEngine") and [MediaPLayer](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/MediaPlayer/MediaPlayer.vcxproj "MediaPlayer")<br>
+>
 > Step 3: Add 'fmod.dll' from the [Externals](https://github.com/RedBellPepperoni/FanshaweMediaPlayer/tree/main/External/fmod/core/lib "Fmod Library") folder to the folder containing the exe
 >
 > Step 4: Create a 'Media' folder and add audio files to it (recognised filetypes : .wav, .mp3, .ogg, .flac)
