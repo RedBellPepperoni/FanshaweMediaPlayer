@@ -4,6 +4,7 @@
 #include "Input/InputManager.h"
 #include "UserInterface/CommandLineInterface.h"
 #include <iostream>
+#include <filesystem>
 
 
 
@@ -232,7 +233,16 @@ namespace FanshaweGameEngine
 
 		void MediaPlayer::LoadClip(const std::string& filePath, bool isStreamed)
 		{	
-			// Craeting a new Audio Clip with the Following Data;
+			// Creating a new Audio Clip with the Following Data;
+
+
+			if (!std::filesystem::exists(filePath))
+			{
+				m_cmdUI->displayData.consoleError = filePath + " : File doesn't exist";
+				return;
+			}
+
+
 			AudioClip newClip(filePath , 1.0);
 
 			bool clipLoadedSuccessfully;

@@ -541,6 +541,7 @@ namespace FanshaweGameEngine
 			// basic Layout
 			OutputTextLine(playerLayout, 17, seekLayout, seekAttrib, playerAttrib ,textAlign::Center);
 
+
 			UpdateAudioSeek(17);
 
 			
