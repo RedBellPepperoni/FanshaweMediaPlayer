@@ -1,8 +1,8 @@
 # Fanshawe Media Player <br>
  Term-1 : Assignment to create an Audio Manager using FMOD API and a Media player to control the Audio manager <br>
 
-## Installation notes:<br>
-<br>
+### Installation notes:<br>
+
 
 > Step 1: Pull the Repository<br>
 >
@@ -10,8 +10,7 @@
 <br>
 
 
-## Usage:<br>
-<br> 
+### Usage:<br>
 
 > Set [MediaPLayer](https://github.com/RedBellPepperoni/MediaFundamentals/blob/main/MediaPlayer/MediaPlayer.vcxproj "MediaPlayer") as the startup project and build+run to run Media Player Lib<br>
 >
@@ -22,8 +21,8 @@
 <br>
 
 
-## Features<br>
-<br>
+### Features<br>
+
 
 > Audio Loading/Unloading using FMOD api
 > 
