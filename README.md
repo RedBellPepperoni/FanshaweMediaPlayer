@@ -1,4 +1,4 @@
-# MediaFundamentals <br>
+# Fanshawe Media Player <br>
  Term-1 : Assignment to create an Audio Manager using FMOD API and a Media player to control the Audio manager <br>
 
 Installion notes:<br>
